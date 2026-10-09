@@ -14,12 +14,12 @@ test_requirements = [
 
 setup(
     name='face_recognition_models',
-    version='0.3.0',
+    version='0.3.1',
     description="Models used by the face_recognition package.",
     long_description=readme,
     author="Adam Geitgey",
     author_email='ageitgey@gmail.com',
-    url='https://github.com/ageitgey/face_recognition_models',
+    url='https://github.com/kieranrees/kr-facerecog',
     packages=[
         'face_recognition_models',
     ],

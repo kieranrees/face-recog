@@ -1,3 +1,8 @@
+Fork of `ageitgey/face_recognition_models <https://github.com/ageitgey/face_recognition_models>`_
+(unmaintained since 2017). The only change: model paths are found with
+``importlib.resources`` instead of ``pkg_resources``, which setuptools 82
+removed. The package name, import name and API are unchanged.
+
 Face Recognition Models
 =======================
 
