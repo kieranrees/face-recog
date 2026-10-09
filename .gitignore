@@ -63,3 +63,9 @@ target/
 .python-version
 
 .idea/
+
+# uv / tooling
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/

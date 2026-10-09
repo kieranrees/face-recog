@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Weekly, to catch a new dlib/numpy/Pillow/setuptools release breaking the package
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          # dlib has no wheels on PyPI; caching uv keeps the source build to the first run
+          enable-cache: true
+
+      - name: Install
+        run: uv sync --locked
+
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Type check
+        run: uv run mypy
+
+      - name: Test
+        run: uv run pytest -q
+
+  build-latest-setuptools:
+    # The fork exists because setuptools removed pkg_resources: build and import it with the newest one
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install with the latest setuptools and import
+        run: |
+          uv venv
+          uv pip install . "setuptools>=82"
+          uv run --no-project python -c "import importlib.util, face_recognition, face_recognition_models; assert importlib.util.find_spec('pkg_resources') is None; print(face_recognition_models.face_recognition_model_location())"

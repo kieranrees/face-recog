@@ -1,3 +1,61 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "face-recog"
+version = "0.4.0"
+description = "Maintained fork of face_recognition and face_recognition_models: lazy model loading, typed, no pkg_resources"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT AND CC0-1.0"
+license-files = ["LICENSE", "LICENSE-face_recognition"]
+authors = [{ name = "Adam Geitgey", email = "ageitgey@gmail.com" }]
+maintainers = [{ name = "Kieran Rees" }]
+dependencies = [
+    "dlib>=19.7",
+    "numpy",
+    "Pillow",
+]
+
+[project.urls]
+Repository = "https://github.com/kieranrees/face-recog"
+Upstream = "https://github.com/ageitgey/face_recognition"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=8",
+    "ruff>=0.16.10",
+]
+
+[tool.setuptools]
+packages = ["face_recognition", "face_recognition_models"]
+
+[tool.setuptools.package-data]
+face_recognition = ["py.typed"]
+face_recognition_models = ["py.typed", "models/*.dat"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "PT"]
+# The formatter owns code line length; the long lines left are upstream's docstrings
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["face_recognition", "face_recognition_models"]
+
+[tool.mypy]
+strict = true
+files = ["face_recognition", "face_recognition_models", "tests"]
+
+[[tool.mypy.overrides]]
+# dlib ships no type information
+module = ["dlib"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
