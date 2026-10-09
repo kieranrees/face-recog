@@ -19,7 +19,7 @@ setup(
     long_description=readme,
     author="Adam Geitgey",
     author_email='ageitgey@gmail.com',
-    url='https://github.com/kieranrees/kr-facerecog',
+    url='https://github.com/kieranrees/face-recog',
     packages=[
         'face_recognition_models',
     ],
